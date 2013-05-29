@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="SelectableRows : &quot;selectableRows&quot; is a javascript behavior (and, optionally, CSS) that can be attached to any table element" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>SelectableRows</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/akhikhl/selectableRows">View on GitHub</a>
+
+          <h1 id="project_title">SelectableRows</h1>
+          <h2 id="project_tagline">&quot;selectableRows&quot; is a javascript behavior (and, optionally, CSS) that can be attached to any table element</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/akhikhl/selectableRows/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/akhikhl/selectableRows/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="selectablerows" class="anchor" href="#selectablerows"><span class="octicon octicon-link"></span></a>selectableRows</h1>
+
+<h2>
+<a name="overview" class="anchor" href="#overview"><span class="octicon octicon-link"></span></a>Overview</h2>
+
+<p>"selectableRows" is a javascript behavior (and, optionally, CSS) that can be attached to any table element.</p>
+
+<p>See <a href="http://akhikhl.blogspot.de/2013/05/test-selectablerows-script.html">online example here</a></p>
+
+<h2>
+<a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h2>
+
+<p>"selectableRows" behavior is attached to table element via "selectableRows" class:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;table</span> <span class="na">id=</span><span class="s">"exampleTable"</span> <span class="na">class=</span><span class="s">"selectableRows"</span><span class="nt">&gt;</span>
+   ...
+<span class="nt">&lt;/table&gt;</span>
+
+  ...
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"http://code.jquery.com/jquery-1.10.0.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"table.selectableRows.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+
+<p>Effect: whenever some row within "table.selectableRows" element is clicked (or its descendant DOM-element is clicked), 
+it gets "selected" class. If some other row in the same table had "selected" class before, it will lose it, 
+so at any time there is only one table row (within the given table) having "selected" class.</p>
+
+<p>"table.selectableRows" elements trigger new event type: "rowSelected.selectableRows". Handlers can be attached like this:</p>
+
+<div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s2">"#exampleTable"</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s2">"rowSelected.selectableRows"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">row</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span> <span class="nx">$</span><span class="p">(</span><span class="nx">row</span><span class="p">).</span><span class="nx">html</span><span class="p">());</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>The page may optionally use CSS file:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">"table.selectableRows.css"</span> <span class="na">rel=</span><span class="s">"stylesheet"</span><span class="nt">&gt;</span>
+</pre></div>
+
+<p>This CSS file paints selected rows in cyan color and shows "hand" mouse-pointer, when mouse is over selectable rows.
+Users of "selectableRows" script are free to define their own CSS, of course.</p>
+
+<h2>
+<a name="copyright-and-license" class="anchor" href="#copyright-and-license"><span class="octicon octicon-link"></span></a>Copyright and License</h2>
+
+<p>Copyright 2013 (c) Andrey Hihlovskiy</p>
+
+<p>All versions, present and past, of "selectRows" script are licensed under MIT license:</p>
+
+<ul>
+<li><a href="http://opensource.org/licenses/MIT">MIT</a></li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">SelectableRows maintained by <a href="https://github.com/akhikhl">akhikhl</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
