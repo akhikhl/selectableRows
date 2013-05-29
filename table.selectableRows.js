@@ -5,7 +5,7 @@ jQuery(function($) {
     table.find("> tbody > tr.selected").removeClass("selected");
     row.addClass("selected");
     scrollElementIntoView(row);
-    table.trigger("rowSelected", row);
+    table.trigger("rowSelected.selectableRows", row);
   }
 
   function selectNextRow(row) {
