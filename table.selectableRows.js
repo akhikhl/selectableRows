@@ -1,5 +1,10 @@
 jQuery(function($) {
 
+  var keyCode = {
+    UP: ($.ui && $.ui.keyCode.UP) || 38,
+    DOWN: ($.ui && $.ui.keyCode.DOWN) || 40
+  };
+
   function selectRow(table, row) {
     row = $(row);
     table.find("> tbody > tr.selected").removeClass("selected");
@@ -59,11 +64,11 @@ jQuery(function($) {
       if(event.altKey || event.ctrlKey || event.shiftKey)
         return; // we don't handle key combinations yet
       var selectedRow = table.find("> tbody > tr.selected");
-      if(event.keyCode == $.ui.keyCode.UP) {
+      if(event.keyCode == keyCode.UP) {
         if(selectPrevRow(selectedRow))
           return false;
       }
-      else if(event.keyCode == $.ui.keyCode.DOWN) {
+      else if(event.keyCode == keyCode.DOWN) {
         if(selectNextRow(selectedRow))
           return false;
       }
