@@ -1,0 +1,20 @@
+/* With cursor pointer we indicate that user may click on selectable rows. */
+table.selectableRows > tbody > tr > td {
+	cursor: pointer;
+}
+
+/* selected unfocused row is colored as pale cyan.
+   sorting_1 is needed for tables doing special coloring on sort columns */
+table.selectableRows > tbody > tr.selected,
+table.selectableRows > tbody > tr.selected > td.sorting_1 {
+  background-color: #BBD1D9;
+}
+
+/* selected focused row is colored as saturated cyan.
+   sorting_1 is needed for tables doing special coloring on sort columns */
+.focused table.selectableRows > tbody > tr.selected,
+.focused table.selectableRows > tbody > tr.selected > td.sorting_1,
+table.selectableRows.focused > tbody > tr.selected,
+table.selectableRows.focused > tbody > tr.selected > td.sorting_1 {
+  background-color: #89D0E5;
+}
