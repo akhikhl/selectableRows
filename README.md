@@ -43,4 +43,4 @@ Copyright 2013 (c) Andrey Hihlovskiy
 
 All versions, present and past, of "selectRows" script are licensed under MIT license:
 
-    MIT
+* [MIT](http://opensource.org/licenses/MIT)
