@@ -4,6 +4,8 @@
 
 "selectableRows" is a javascript behavior (and, optionally, CSS) that can be attached to any table element.
 
+See [online example here](http://akhikhl.blogspot.de/2013/05/test-selectablerows-script.html)
+
 ##API
 
 "selectableRows" behavior is attached to table element via "selectableRows" class:
