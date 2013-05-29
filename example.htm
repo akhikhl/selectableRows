@@ -50,7 +50,6 @@
   <script type="text/javascript">
     jQuery(function($) {
       $("#exampleTable").on("rowSelected", function(event, row) {
-        console.log(event.type, $(row).html());
         $(document.createElement("span"))
           .html(event.type + " artist: " + $(row).find("td:eq(0)").text() + ", album: " + $(row).find("td:eq(1)").text() + "<br>")
           .appendTo("#log").get(0).scrollIntoView(false);
