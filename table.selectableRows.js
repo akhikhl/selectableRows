@@ -23,7 +23,8 @@ jQuery(function($) {
     row = $(row);
     var table = row.closest("table.selectableRows");
     var prevRow = row.prev("tr");
-    if(prevRow.length == 0 && row.parent().is("tbody")) {
+    if(prevRow.length == 0 && row.parent().is("tbody")) { // the very first row in tbody?
+      // probably user would be pleased to see table header being scrolled into view
       scrollElementIntoView(table.find("> thead > tr"));
       return false;
     }
@@ -36,7 +37,7 @@ jQuery(function($) {
 
   function scrollElementIntoView(elem) {
     elem = $(elem);
-    if(typeof elem.scrollParent == "function") {
+    if(typeof elem.scrollParent == "function") { // scrollParent is available only if jquery-ui was included
       var offsetParent = elem.offsetParent();
       var scrollParent = elem.scrollParent();
       if(offsetParent.length != 0 && offsetParent.get(0) === scrollParent.get(0)) {
