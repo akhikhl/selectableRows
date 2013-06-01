@@ -22,49 +22,40 @@ jQuery(function($) {
     END: ($.ui && $.ui.keyCode.END) || 35
   };
   
-  function select(table, newSelection) {
-    newSelection = $(newSelection);
-    if(!table.hasClass("multiselect"))
-      newSelection = newSelection.first();
-    var oldSelection = table.find("> tbody > tr.selected");
-    var selectionToAdd = newSelection.not(oldSelection);
-    var selectionToRemove = oldSelection.not(newSelection);
+  function changeSelection(table, selectionToAdd, selectionToRemove, scrollToLast) {
+    selectionToAdd = $(selectionToAdd);
+    selectionToRemove = $(selectionToRemove);
     if(selectionToAdd.length == 0 && selectionToRemove.length == 0)
       return false;
+    var oldSelection = table.find("> tbody > tr.selected");
+    var newSelection = oldSelection.not(selectionToRemove).add(selectionToAdd);
     if(selectionToRemove.length != 0) {
       selectionToRemove.removeClass("selected");
       table.trigger("rowUnselected.selectableRows", [ selectionToRemove ]);
     }
     if(selectionToAdd.length != 0) {
       selectionToAdd.addClass("selected");
-      scrollElementIntoView(selectionToAdd.first());
+      scrollElementIntoView(scrollToLast ? selectionToAdd.last() : selectionToAdd.first());
       table.trigger("rowSelected.selectableRows", [ selectionToAdd ]);
     }
     table.trigger("rowSelectionChanged.selectableRows", [ newSelection, oldSelection ]);
+    document.getSelection().removeAllRanges();
     return true;
+  }
+  
+  function select(table, newSelection) {
+    newSelection = $(newSelection);
+    if(!table.hasClass("multiselect"))
+      newSelection = newSelection.first();
+    var oldSelection = table.find("> tbody > tr.selected");
+    return changeSelection(table, newSelection.not(oldSelection), oldSelection.not(newSelection));
   }
   
   function toggle(table, rows) {
     rows = $(rows);
     if(!table.hasClass("multiselect"))
       rows = rows.first();
-    var oldSelection = table.find("> tbody > tr.selected");
-    var selectionToAdd = rows.not(".selected");
-    var selectionToRemove = rows.filter(".selected");
-    if(selectionToAdd.length == 0 && selectionToRemove.length == 0)
-      return false;
-    var newSelection = oldSelection.not(rows).add(selectionToAdd);
-    if(selectionToRemove.length != 0) {
-      selectionToRemove.removeClass("selected");
-      table.trigger("rowUnselected.selectableRows", [ selectionToRemove ]);
-    }
-    if(selectionToAdd.length != 0) {
-      selectionToAdd.addClass("selected");
-      scrollElementIntoView(selectionToAdd.first());
-      table.trigger("rowSelected.selectableRows", [ selectionToAdd ]);
-    }
-    table.trigger("rowSelectionChanged.selectableRows", [ newSelection, oldSelection ]);
-    return true;
+    return changeSelection(table, rows.not(".selected"), rows.filter(".selected"));
   }
   
   function selectRange(table, row) {
@@ -77,27 +68,14 @@ jQuery(function($) {
     var lastSelIndex = allRows.index(oldSelection.last());
     var rowIndex = allRows.index(row);
     var newSelection;
-    var scrollToFirst = false; 
-    if(rowIndex < firstSelIndex) {
+    var scrollToLast = false;
+    if(rowIndex < firstSelIndex)
       newSelection = allRows.slice(rowIndex, lastSelIndex + 1);
-      scrollToFirst = true;
-    }
-    else
+    else {
       newSelection = allRows.slice(firstSelIndex, rowIndex + 1);
-    var selectionToRemove = oldSelection.not(newSelection);
-    if(selectionToRemove.length != 0) {
-      selectionToRemove.removeClass("selected");
-      table.trigger("rowUnselected.selectableRows", [ selectionToRemove ]);
+      scrollToLast = true;
     }
-    var selectionToAdd = newSelection.not(oldSelection);
-    if(selectionToAdd.length != 0) {
-      selectionToAdd.addClass("selected");
-      scrollElementIntoView(scrollToFirst ? selectionToAdd.first() : selectionToAdd.last());
-      table.trigger("rowSelected.selectableRows", [ selectionToAdd ]);
-    }
-    document.getSelection().removeAllRanges();      
-    table.trigger("rowSelectionChanged.selectableRows", [ table.find("> tbody > tr.selected"), oldSelection ]);
-    return true;
+    return changeSelection(table, newSelection.not(oldSelection), oldSelection.not(newSelection), scrollToLast);
   }
 
   function selectFirstRow(row, extendSelection) {
