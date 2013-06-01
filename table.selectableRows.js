@@ -21,60 +21,81 @@ jQuery(function($) {
     HOME: ($.ui && $.ui.keyCode.HOME) || 36,
     END: ($.ui && $.ui.keyCode.END) || 35
   };
-
-  function selectRow(table, row, modifier) {
-    row = $(row);
+  
+  function select(table, newSelection) {
+    newSelection = $(newSelection);
+    if(!table.hasClass("multiselect"))
+      newSelection = newSelection.first();
     var oldSelection = table.find("> tbody > tr.selected");
-    if(modifier == "selectSingle") {
-      if(row.hasClass("selected") && oldSelection.length == 1)
-        return false;
-      var selectionToRemove = oldSelection.not(row);
-      if(selectionToRemove.length != 0) {
-        selectionToRemove.removeClass("selected");
-        table.trigger("rowUnselected.selectableRows", [ selectionToRemove ]);
-      }
-      var selectionToAdd = row.not(oldSelection);
-      if(selectionToAdd.length != 0) {
-        selectionToAdd.addClass("selected");
-        scrollElementIntoView(selectionToAdd);
-        table.trigger("rowSelected.selectableRows", [ selectionToAdd ]);
-      }
+    var selectionToAdd = newSelection.not(oldSelection);
+    var selectionToRemove = oldSelection.not(newSelection);
+    if(selectionToAdd.length == 0 && selectionToRemove.length == 0)
+      return false;
+    if(selectionToRemove.length != 0) {
+      selectionToRemove.removeClass("selected");
+      table.trigger("rowUnselected.selectableRows", [ selectionToRemove ]);
     }
-    else if(modifier == "toggleSingle") {
-      row.toggleClass("selected");
-      scrollElementIntoView(row);
-      if(row.hasClass("selected"))
-        table.trigger("rowSelected.selectableRows", [ row ]);
-      else
-        table.trigger("rowUnselected.selectableRows", [ row ]);
-      document.getSelection().removeAllRanges();      
+    if(selectionToAdd.length != 0) {
+      selectionToAdd.addClass("selected");
+      scrollElementIntoView(selectionToAdd.first());
+      table.trigger("rowSelected.selectableRows", [ selectionToAdd ]);
     }
-    else if(modifier == "selectRange") {
-      var allRows = table.find("> tbody > tr");
-      var firstSelIndex = allRows.index(oldSelection.first());
-      var lastSelIndex = allRows.index(oldSelection.last());
-      var rowIndex = allRows.index(row);
-      var newSelection;
-      var scrollToFirst = false; 
-      if(rowIndex < firstSelIndex) {
-        newSelection = allRows.slice(rowIndex, lastSelIndex + 1);
-        scrollToFirst = true;
-      }
-      else
-        newSelection = allRows.slice(firstSelIndex, rowIndex + 1);
-      var selectionToRemove = oldSelection.not(newSelection);
-      if(selectionToRemove.length != 0) {
-        selectionToRemove.removeClass("selected");
-        table.trigger("rowUnselected.selectableRows", [ selectionToRemove ]);
-      }
-      var selectionToAdd = newSelection.not(oldSelection);
-      if(selectionToAdd.length != 0) {
-        selectionToAdd.addClass("selected");
-        scrollElementIntoView(scrollToFirst ? selectionToAdd.first() : selectionToAdd.last());
-        table.trigger("rowSelected.selectableRows", [ selectionToAdd ]);
-      }
-      document.getSelection().removeAllRanges();      
+    table.trigger("rowSelectionChanged.selectableRows", [ newSelection, oldSelection ]);
+    return true;
+  }
+  
+  function toggle(table, rows) {
+    rows = $(rows);
+    if(!table.hasClass("multiselect"))
+      rows = rows.first();
+    var oldSelection = table.find("> tbody > tr.selected");
+    var selectionToAdd = rows.not(".selected");
+    var selectionToRemove = rows.filter(".selected");
+    if(selectionToAdd.length == 0 && selectionToRemove.length == 0)
+      return false;
+    var newSelection = oldSelection.not(rows).add(selectionToAdd);
+    if(selectionToRemove.length != 0) {
+      selectionToRemove.removeClass("selected");
+      table.trigger("rowUnselected.selectableRows", [ selectionToRemove ]);
     }
+    if(selectionToAdd.length != 0) {
+      selectionToAdd.addClass("selected");
+      scrollElementIntoView(selectionToAdd.first());
+      table.trigger("rowSelected.selectableRows", [ selectionToAdd ]);
+    }
+    table.trigger("rowSelectionChanged.selectableRows", [ newSelection, oldSelection ]);
+    return true;
+  }
+  
+  function selectRange(table, row) {
+    row = $(row);
+    if(!table.hasClass("multiselect"))
+      return select(table, row);
+    var oldSelection = table.find("> tbody > tr.selected");
+    var allRows = table.find("> tbody > tr");
+    var firstSelIndex = allRows.index(oldSelection.first());
+    var lastSelIndex = allRows.index(oldSelection.last());
+    var rowIndex = allRows.index(row);
+    var newSelection;
+    var scrollToFirst = false; 
+    if(rowIndex < firstSelIndex) {
+      newSelection = allRows.slice(rowIndex, lastSelIndex + 1);
+      scrollToFirst = true;
+    }
+    else
+      newSelection = allRows.slice(firstSelIndex, rowIndex + 1);
+    var selectionToRemove = oldSelection.not(newSelection);
+    if(selectionToRemove.length != 0) {
+      selectionToRemove.removeClass("selected");
+      table.trigger("rowUnselected.selectableRows", [ selectionToRemove ]);
+    }
+    var selectionToAdd = newSelection.not(oldSelection);
+    if(selectionToAdd.length != 0) {
+      selectionToAdd.addClass("selected");
+      scrollElementIntoView(scrollToFirst ? selectionToAdd.first() : selectionToAdd.last());
+      table.trigger("rowSelected.selectableRows", [ selectionToAdd ]);
+    }
+    document.getSelection().removeAllRanges();      
     table.trigger("rowSelectionChanged.selectableRows", [ table.find("> tbody > tr.selected"), oldSelection ]);
     return true;
   }
@@ -84,7 +105,7 @@ jQuery(function($) {
     var table = row.closest("table.selectableRows");
     var firstRow = table.find("> tbody > tr").first();
     if(firstRow.length != 0)
-      return selectRow(table, firstRow, extendSelection ? "selectRange" : "selectSingle");
+      return extendSelection ? selectRange(table, firstRow) : select(table, firstRow);
     return false;
   }
 
@@ -98,7 +119,7 @@ jQuery(function($) {
       return false;
     }
     if(prevRow.length != 0)
-      return selectRow(table, prevRow, extendSelection ? "selectRange" : "selectSingle");
+      return extendSelection ? selectRange(table, prevRow) : select(table, prevRow);
     return false;
   }
     
@@ -107,7 +128,7 @@ jQuery(function($) {
     var table = row.closest("table.selectableRows");
     var nextRow = row.last().next("tr");
     if(nextRow.length != 0)
-      return selectRow(table, nextRow, extendSelection ? "selectRange" : "selectSingle");
+      return extendSelection ? selectRange(table, nextRow) : select(table, nextRow);
     return false;
   }
 
@@ -116,7 +137,7 @@ jQuery(function($) {
     var table = row.closest("table.selectableRows");
     var lastRow = table.find("> tbody > tr").last();
     if(lastRow.length != 0)
-      return selectRow(table, lastRow, extendSelection ? "selectRange" : "selectSingle");
+      return extendSelection ? selectRange(table, lastRow) : select(table, lastRow);
     return false;
   }
 
@@ -136,14 +157,17 @@ jQuery(function($) {
 
   $("body").on("click", "table.selectableRows > tbody > tr", function(event) {
     var table = $(this).closest("table.selectableRows");
-    var modifier = "selectSingle";
     if(table.hasClass("multiselect")) {
-      if(event.ctrlKey)
-        modifier = "toggleSingle";
-      else if(event.shiftKey)
-        modifier = "selectRange";
+      if(event.ctrlKey) {
+        toggle(table, this);
+        return;
+      }
+      if(event.shiftKey) {
+        selectRange(table, this);
+        return;
+      }
     }
-    selectRow(table, this, modifier);
+    select(table, this);
   });
 
   $("body").on("keydown", function(event) {
@@ -171,4 +195,29 @@ jQuery(function($) {
       }
     }
   });
+  
+  var methods = {
+    selection: function(newValue) {
+      if(newValue) {
+        select(this, newValue);
+        return this;
+      }
+      return this.find("> tbody > tr.selected");
+    },
+    selectAll: function() {
+      if(this.hasClass("multiselect"))
+        select(this, this.find("> tbody > tr"));
+      return this;
+    },
+    selectNone: function() {
+      select(this, $());
+      return this;
+    }
+  };
+  
+  $.fn.selectableRows = function(method) {
+    if (methods[method])
+      return methods[ method ].apply(this, Array.prototype.slice.call(arguments, 1));
+    $.error("Method " +  method + " does not exist on jQuery.selectableRows");
+  };
 });

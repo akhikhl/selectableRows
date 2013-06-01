@@ -68,7 +68,9 @@
           <tr><td>006</td><td>Rolling Stones</td><td>Goats Head Soup</td><td>1973</td></tr>
         </tbody>
       </table>
-      <div id="selectedSet"></div>
+      <input id="btnSelectAll" type="button" value="Select All"/>
+      <input id="btnSelectNone" type="button" value="Select None"/>
+      <div id="selectedSet">Selected product Ids: []</div>
       <div id="controlBar">Log:<input type="button" id="btnClearLog" value="Clear"></input></div>
       <div id="log"></div>
       See also:
@@ -84,6 +86,14 @@
       $("table.selectableRows").on("rowSelected.selectableRows rowUnselected.selectableRows", function(event, rows) {
         logEvent(event, rows);
         $("#selectedSet").text("Selected product Ids: " + JSON.stringify(getSelectedProductIds()));
+      });
+
+      $("#btnSelectAll").on("click", function() {
+        $("#exampleTable").selectableRows("selectAll");
+      });
+      
+      $("#btnSelectNone").on("click", function() {
+        $("#exampleTable").selectableRows("selectNone");
       });
 
       function getSelectedProductIds() {

@@ -30,6 +30,25 @@ so at any time there is only one table row (within the given table) having "sele
 When an additional class "multiselect" is specified, the table supports multiple-row selection (with the help of 
 CTRL and SHIFT keys).
 
+Note that selectableRows initialization requires *only* presence of "selectableRows" class
+and including "table.selectableRows.js". There is no jquery-style initialization for selectableRows.
+
+### Functions
+
+selectAll - selects all rows in the given table (if multiple-row selections are allowed).
+
+Example:
+```javascript
+$("#exampleTable").selectableRows("selectAll");
+```
+
+selectNone - deselects all rows in the given table.
+
+Example:
+```javascript
+$("#exampleTable").selectableRows("selectNone");
+```
+
 ### Events
 
 * "rowSelected.selectableRows"
