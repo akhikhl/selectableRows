@@ -39,10 +39,13 @@
 
 <p>"selectableRows" is a javascript behavior (and, optionally, CSS) that can be attached to any table element.</p>
 
-<p>See <a href="http://akhikhl.blogspot.de/2013/05/test-selectablerows-script.html">online example here</a></p>
+<p>See <a href="https://dl.dropboxusercontent.com/u/15089387/js/selectableRows/example_selectableRows.htm">online example here</a></p>
 
 <h2>
 <a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h2>
+
+<h3>
+<a name="initialization" class="anchor" href="#initialization"><span class="octicon octicon-link"></span></a>Initialization</h3>
 
 <p>"selectableRows" behavior is attached to table element via "selectableRows" class:</p>
 
@@ -59,12 +62,57 @@
 it gets "selected" class. If some other row in the same table had "selected" class before, it will lose it, 
 so at any time there is only one table row (within the given table) having "selected" class.</p>
 
-<p>"table.selectableRows" elements trigger new event type: "rowSelected.selectableRows". Handlers can be attached like this:</p>
+<p>When an additional class "multiselect" is specified, the table supports multiple-row selection (with the help of 
+CTRL and SHIFT keys).</p>
+
+<h3>
+<a name="events" class="anchor" href="#events"><span class="octicon octicon-link"></span></a>Events</h3>
+
+<ul>
+<li>"rowSelected.selectableRows"</li>
+</ul><p>triggered when some row(s) is(are) selected.</p>
+
+<p>parameters: row - jQuery object, associated with newly selected row(s).</p>
+
+<p>handler example:</p>
 
 <div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s2">"#exampleTable"</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s2">"rowSelected.selectableRows"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">row</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span> <span class="nx">$</span><span class="p">(</span><span class="nx">row</span><span class="p">).</span><span class="nx">html</span><span class="p">());</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span> <span class="nx">row</span><span class="p">);</span>
 <span class="p">});</span>
 </pre></div>
+
+<ul>
+<li>"rowUnselected.selectableRows"</li>
+</ul><p>triggered when some row(s) is(are) deselected.</p>
+
+<p>parameters: row - jQuery object, associated with newly deselected row(s).</p>
+
+<p>handler example:</p>
+
+<div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s2">"#exampleTable"</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s2">"rowUnselected.selectableRows"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">row</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span> <span class="nx">row</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<ul>
+<li>"rowSelectionChanged.selectableRows"</li>
+</ul><p>triggered when selection changes - some row(s) is(are) selected or deselected.</p>
+
+<p>parameters:
+  newSelection - jQuery object, associated with newly selected rows.
+  oldSelection - jQuery object, associated with previously selected rows.</p>
+
+<p>note that newSelection and oldSelection may intersect.</p>
+
+<p>handler example:</p>
+
+<div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s2">"#exampleTable"</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s2">"rowSelectionChanged.selectableRows"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">newSelection</span><span class="p">,</span> <span class="nx">oldSelection</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span> <span class="nx">newSelection</span><span class="p">,</span> <span class="nx">oldSelection</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="stylesheets" class="anchor" href="#stylesheets"><span class="octicon octicon-link"></span></a>Stylesheets</h3>
 
 <p>The page may optionally use CSS file:</p>
 
