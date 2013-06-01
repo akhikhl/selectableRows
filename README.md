@@ -3,6 +3,7 @@
 ##Overview
 
 "selectableRows" is a javascript behavior (and, optionally, CSS) that can be attached to any table element.
+When selectableRows is enabled, clicking on table rows adds/removes "selected" class on them and triggers events.
 
 See [online example here](https://dl.dropboxusercontent.com/u/15089387/js/selectableRows/example_selectableRows.htm)
 
@@ -33,45 +34,61 @@ CTRL and SHIFT keys).
 
 * "rowSelected.selectableRows"
 
-triggered when some row(s) is(are) selected.
+Triggered when some row(s) is(are) selected.
 
-parameters: row - jQuery object, associated with newly selected row(s).
+Parameters: rows - jQuery object, associated with newly selected row(s).
 
-handler example:
+Handler example:
 ```javascript
-$("#exampleTable").on("rowSelected.selectableRows", function(event, row) {
-  console.log(event.type, row);
+$("#exampleTable").on("rowSelected.selectableRows", function(event, rows) {
+  console.log(event.type, rows);
 });
 ```
+
+Note that "rows" does not include previously selected rows. For example, if selection changes from ["A", "B", "C"] 
+to ["B", "C", "D"], then rows will be [ "D" ].
+
 
 * "rowUnselected.selectableRows"
 
-triggered when some row(s) is(are) deselected.
+Triggered when some row(s) is(are) deselected.
 
-parameters: row - jQuery object, associated with newly deselected row(s).
+Parameters: rows - jQuery object, associated with newly deselected row(s).
 
-handler example:
+Handler example:
 ```javascript
-$("#exampleTable").on("rowUnselected.selectableRows", function(event, row) {
-  console.log(event.type, row);
+$("#exampleTable").on("rowUnselected.selectableRows", function(event, rows) {
+  console.log(event.type, rows);
 });
 ```
 
+Note that "rows" does not include newly selected rows. For example, if selection changes from ["A", "B", "C"] 
+to ["B", "C", "D"], then rows will be [ "A" ].
+
 * "rowSelectionChanged.selectableRows"
 
-triggered when selection changes - some row(s) is(are) selected or deselected.
+Triggered when selection changes - some row(s) is(are) selected and/or deselected.
 
-parameters:
-  newSelection - jQuery object, associated with newly selected rows.
-  oldSelection - jQuery object, associated with previously selected rows.
-  
-note that newSelection and oldSelection may intersect.
+Parameters:
+  newSelection - jQuery object, associated with new selection (rows).
+  oldSelection - jQuery object, associated with old selection (rows).
 
-handler example:
+Handler example:
 ```javascript
 $("#exampleTable").on("rowSelectionChanged.selectableRows", function(event, newSelection, oldSelection) {
   console.log(event.type, newSelection, oldSelection);
 });
+```
+
+Note that newSelection and oldSelection may intersect. For example, if selection changes from ["A", "B", "C"] 
+to ["B", "C", "D"], then oldSelection will be [ "A", "B", "C" ] and newSelection will be ["B", "C", "D"].
+
+You can calculate non-intersecting row sets like this:
+
+```javascript
+newSelection.not(oldSelection); // get only those rows that were not checked before
+
+oldSelection.not(newSelection); // get only those rows that are not checked anymore
 ```
 
 ### Stylesheets
@@ -88,6 +105,6 @@ Users of "selectableRows" script are free to define their own CSS, of course.
 
 Copyright 2013 (c) Andrey Hihlovskiy
 
-All versions, present and past, of "selectRows" script are licensed under MIT license:
+All versions, present and past, of "selectableRows" script are licensed under MIT license:
 
 * [MIT](http://opensource.org/licenses/MIT)
