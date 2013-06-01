@@ -7,9 +7,21 @@
         font-face: Verdana, Arial, sans-serif;
         font-size: 10pt;
       }
+      
+      #example a.seeAlso {
+        color: DarkBlue;
+        display: block;
+        font-weight: bold;
+        margin: 4px 0 4px 0;
+        text-decoration: none;        
+      }
+      
+      #controlBar {
+        margin: 8px 0 8px 0;
+      }
 
       #exampleTable {
-        margin-top: 16px;
+        margin: 16px 0 16px 0;
         border-collapse: collapse;
       }
 
@@ -40,8 +52,9 @@
   </head>
   <body>
     <div id="example">
-      Example of selectableRows behavior. Click with the left mouse button within the table.<br>
-      <input type="checkbox" id="chkMultiSelect"/>Allow multiple selection (click with CTRL or SHIFT key).
+      <h3>Example of selectableRows behavior.</h3> 
+      Click with the left mouse button within the table.<br>
+      <div id="controlBar"><input type="checkbox" id="chkMultiSelect"/>Allow multiple selection (click with CTRL or SHIFT key).</div>
       <table id="exampleTable" class="selectableRows" tabindex="0">
         <thead>
           <tr><td>Product Id</td><td>Artist</td><td>Album</td><td>Year</td></tr>
@@ -55,9 +68,11 @@
           <tr><td>006</td><td>Rolling Stones</td><td>Goats Head Soup</td><td>1973</td></tr>
         </tbody>
       </table>
-      <div id="selectedSet"></div>
-      Log:<input type="button" id="btnClearLog" value="Clear"></input>
+      <div id="selectedSet">Selected product Ids: []</div>
+      <div id="controlBar">Log:<input type="button" id="btnClearLog" value="Clear"></input></div>
       <div id="log"></div>
+      See also:
+      <a class="seeAlso" href="example_selectableRows_focusable.htm">Combining selectableRows and focusable</a>
     </div>
   </body>
   <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
