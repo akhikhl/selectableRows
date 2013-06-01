@@ -42,6 +42,15 @@ Example:
 $("#exampleTable").selectableRows("selectAll");
 ```
 
+selection(newValue) - gets/sets selection in the given table.
+
+Example:
+```javascript
+$("#exampleTable").selectableRows("selection", $("#exampleTable").find("> tbody > tr:eq(2)"));
+
+var selection = $("#exampleTable").selectableRows("selection");
+```
+
 selectNone - deselects all rows in the given table.
 
 Example:

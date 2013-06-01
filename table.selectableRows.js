@@ -7,7 +7,7 @@
  * Date: 29.05.2013
  *
  * @author Andrey Hihlovskiy
- * @version 1.0.1
+ * @version 1.0.2
  * @requires jQuery v1.7 or later
  *
  * https://github.com/akhikhl/selectableRows
@@ -175,17 +175,17 @@ jQuery(function($) {
   });
   
   var methods = {
+    selectAll: function() {
+      if(this.hasClass("multiselect"))
+        select(this, this.find("> tbody > tr"));
+      return this;
+    },
     selection: function(newValue) {
       if(newValue) {
         select(this, newValue);
         return this;
       }
       return this.find("> tbody > tr.selected");
-    },
-    selectAll: function() {
-      if(this.hasClass("multiselect"))
-        select(this, this.find("> tbody > tr"));
-      return this;
     },
     selectNone: function() {
       select(this, $());

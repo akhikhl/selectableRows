@@ -1,5 +1,10 @@
 #Change log
 
+###Version 1.0.2
+01.06.2013
+
+Introduced API functions (see README for full description).
+
 ###Version 1.0.1
 01.06.2013
 
