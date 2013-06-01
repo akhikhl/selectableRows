@@ -1,0 +1,100 @@
+<html>
+  <head>
+    <title>Example of selectableRows behavior combined with focusable</title>
+    <link href="table.selectableRows.css" rel="stylesheet">
+    <style>
+      #example, #example input, #example td {
+        font-face: Verdana, Arial, sans-serif;
+        font-size: 10pt;
+      }
+
+      #exampleTable {
+        margin-top: 16px;
+        border-collapse: collapse;
+      }
+
+      #exampleTable thead td {
+        background-color: Whitesmoke;
+      }
+
+      #exampleTable td {
+        border: 1px solid Gainsboro;
+        padding: 3px 5px 3px 5px;
+      }
+
+      #selectedSet {
+        margin: 8px 0 8px 0;
+      }
+
+      #btnClearLog {
+        margin-left: 16px;
+      }
+
+      #log {
+        border: 1px solid Gainsboro;
+        height: 100px;
+        margin: 8px 0 8px 0;
+        overflow: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="example">
+      Example of selectableRows behavior combined with focusable. Click with the mouse, press UP and DOWN keys.<br>
+      <input type="checkbox" id="chkMultiSelect"/>Allow multiple selection (then combine clicks and keys with CTRL and SHIFT).
+      <table id="exampleTable" class="selectableRows focusable" tabindex="0">
+        <thead>
+          <tr><td>Product Id</td><td>Artist</td><td>Album</td><td>Year</td></tr>
+        </thead>
+        <tbody>
+          <tr><td>001</td><td>Beatles</td><td>Please Please Me</td><td>1963</td></tr>
+          <tr><td>002</td><td>Beatles</td><td>A Hard Day's Night</td><td>1964</td></tr>
+          <tr><td>003</td><td>Beatles</td><td>Yellow Submarine</td><td>1969</td></tr>
+          <tr><td>004</td><td>Rolling Stones</td><td>December's Children (And Everybody's)</td><td>1965</td></tr>
+          <tr><td>005</td><td>Rolling Stones</td><td>Beggars Banquet</td><td>1968</td></tr>
+          <tr><td>006</td><td>Rolling Stones</td><td>Goats Head Soup</td><td>1973</td></tr>
+        </tbody>
+      </table>
+      <div id="selectedSet"></div>
+      Log:<input type="button" id="btnClearLog" value="Clear"></input>
+      <div id="log"></div>
+    </div>
+  </body>
+  <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+  <script type="text/javascript" src="https://dl.dropboxusercontent.com/u/15089387/js/focusable/focusable.js"></script>
+  <script type="text/javascript" src="table.selectableRows.js"></script>
+  <script type="text/javascript">
+    jQuery(function($) {
+    
+      $("table.selectableRows").on("rowSelected.selectableRows rowUnselected.selectableRows", function(event, rows) {
+        logEvent(event, rows);
+        $("#selectedSet").text("Selected product Ids: " + JSON.stringify(getSelectedProductIds()));
+      });
+
+      function getSelectedProductIds() {
+        var result = [];
+        $("table.selectableRows").find(">tbody > tr.selected").each(function() {
+          result.push($(this).children("td:eq(0)").text());          
+        });
+        return result;
+      };
+      
+      function logEvent(event, rows) {
+        rows.each(function() {        
+          $(document.createElement("span"))
+            .append(event.type + " id: " + $($(this).find("td").get(0)).text() + "<br>")
+            .appendTo("#log").get(0).scrollIntoView(false);
+        });
+      };
+      
+      $("#chkMultiSelect").on("change", function(event) {
+        $("table.selectableRows").toggleClass("multiselect", $(this).is(":checked"));
+      });
+      $("#chkMultiSelect").trigger("change");
+      
+      $("#btnClearLog").on("click", function() {
+        $("#log").empty();
+      });
+    });
+  </script>
+</html>

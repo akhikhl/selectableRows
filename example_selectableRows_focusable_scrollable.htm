@@ -1,0 +1,185 @@
+<html>
+  <head>
+    <title>Example of selectableRows behavior combined with focusable and scrollable</title>
+    <link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet">
+    <link href="table.selectableRows.css" rel="stylesheet">
+    <link href="example.css" rel="stylesheet">
+    <style>
+      #example, #example input, #example td {
+        font-face: Verdana, Arial, sans-serif;
+        font-size: 10pt;
+      }
+      
+      #exampleTable {
+        border-collapse: collapse;
+        bottom: 168px;
+        display: block;
+        left: 4px;
+        position: absolute;
+        width: 730px;
+        top: 70px;
+      }
+
+      #exampleTable thead {
+        background-color: Whitesmoke;
+        width: 700px;
+      }
+
+      #exampleTable td {
+        border: 1px solid Gainsboro;
+        padding: 3px 5px 3px 5px;
+      }
+
+      #exampleTable > tbody > tr > td.scrollableContent {        
+        border: none;
+        padding: 0;
+        position: relative;
+      }
+      
+      #exampleTable > tbody > tr > td.scrollableContent > div {
+        position: absolute;
+        left: 0;
+        top: 24px;
+        right: 0;
+        bottom: 0;
+        overflow: auto;
+      }
+      
+      #exampleTable > tbody > tr > td.scrollableContent > div > table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      
+      td.productId {
+        width: 30px;
+      }
+      
+      td.artist {
+        width: 200px;
+      }
+      
+      td.album {
+        width: 380px;
+      }
+      
+      td.year {
+        width: 60px;
+      }
+      
+      #selectedSet {
+        bottom: 132px;
+        height: 20px;
+        left: 4px;
+        position: absolute;
+        right: 4px;
+      }
+      
+      #divLogControl {
+        bottom: 116px;
+        height: 20px;
+        left: 4px;
+        position: absolute;
+        right: 4px;
+      }
+
+      #btnClearLog {
+        margin-left: 16px;
+      }
+
+      #log {
+        border: 1px solid Gainsboro;
+        bottom: 0;
+        height: 92px;
+        left: 0;
+        margin: 8px;
+        overflow: auto;
+        position: absolute;
+        right: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="example">
+      Example of selectableRows behavior combined with focusable. Click with the mouse, press UP and DOWN keys.<br>
+      Additionally the table is made scrollable (trick with nested tables).<br>
+      <input type="checkbox" id="chkMultiSelect"/>Allow multiple selection
+      <table id="exampleTable" class="focusable" tabindex="0">
+        <thead>
+          <tr><td class="productId">Id</td><td class="artist">Artist</td><td class="album">Album</td><td class="year">Year</td></tr>
+        </thead>
+        <tbody><tr><td class="scrollableContent" colspan="3"><div>
+          <!-- nested table is used to simulate fixed header and scrollable body -->
+          <table class="selectableRows"><tbody>
+            <tr><td class="productId">001</td><td class="artist">Beatles</td><td class="album">Please Please Me</td><td class="year">1963</td></tr>
+            <tr><td>002</td><td>Beatles</td><td>With the Beatles</td><td>1963</td></tr>
+            <tr><td>003</td><td>Beatles</td><td>Beatlemania! With the Beatles</td><td>1963</td></tr>
+            <tr><td>004</td><td>Beatles</td><td>Introducing... The Beatles</td><td>1964</td></tr>
+            <tr><td>005</td><td>Beatles</td><td>Meet the Beatles!</td><td>1964</td></tr>
+            <tr><td>006</td><td>Beatles</td><td>Twist and Shout</td><td>1964</td></tr>
+            <tr><td>007</td><td>Beatles</td><td>The Beatles' Second Album</td><td>1964</td></tr>
+            <tr><td>008</td><td>Beatles</td><td>The Beatles' Long Tall Sally</td><td>1964</td></tr>
+            <tr><td>009</td><td>Beatles</td><td>A Hard Day's Night</td><td>1964</td></tr>
+            <tr><td>010</td><td>Beatles</td><td>Yellow Submarine</td><td>1969</td></tr>        
+            <tr><td>011</td><td>Rolling Stones</td><td>The Rolling Stones / England's Newest Hit Makers </td><td>1964</td></tr>
+            <tr><td>012</td><td>Rolling Stones</td><td>12x5</td><td>1964</td></tr>
+            <tr><td>013</td><td>Rolling Stones</td><td>The Rolling Stones No. 2</td><td>1965</td></tr>
+            <tr><td>014</td><td>Rolling Stones</td><td>The Rolling Stones, Now!</td><td>1965</td></tr>
+            <tr><td>015</td><td>Rolling Stones</td><td>Out of Our Heads</td><td>1965</td></tr>
+            <tr><td>016</td><td>Rolling Stones</td><td>December's Children (And Everybody's)</td><td>1965</td></tr>
+            <tr><td>017</td><td>Rolling Stones</td><td>Aftermath</td><td>1966</td></tr>
+            <tr><td>018</td><td>Rolling Stones</td><td>Between the Buttons</td><td>1967</td></tr>
+            <tr><td>019</td><td>Rolling Stones</td><td>Their Satanic Majesties Request</td><td>1967</td></tr>
+            <tr><td>020</td><td>Rolling Stones</td><td>Beggars Banquet</td><td>1968</td></tr>
+            <tr><td>021</td><td>Rolling Stones</td><td>Let It Bleed</td><td>1969</td></tr>
+            <tr><td>022</td><td>Rolling Stones</td><td>Sticky Fingers</td><td>1971</td></tr>
+            <tr><td>023</td><td>Rolling Stones</td><td>Exile on Main St.</td><td>1972</td></tr>
+            <tr><td>024</td><td>Rolling Stones</td><td>Goats Head Soup</td><td>1973</td></tr>
+            <tr><td>025</td><td>Rolling Stones</td><td>It's Only Rock 'n' Roll</td><td>1974</td></tr>
+            <tr><td>026</td><td>Rolling Stones</td><td>Black and Blue</td><td>1976</td></tr>
+            <tr><td>027</td><td>Rolling Stones</td><td>Some Girls</td><td>1978</td></tr>
+          </tbody></table>
+        </div></td></tr></tbody>
+      </table>
+      <div id="selectedSet"></div>
+      <div id="divLogControl">Log:<input type="button" id="btnClearLog" value="Clear"></input></div>
+      <div id="log"></div>
+    </div>
+  </body>
+  <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <script type="text/javascript" src="https://dl.dropboxusercontent.com/u/15089387/js/focusable/focusable.js"></script>
+  <script type="text/javascript" src="table.selectableRows.js"></script>
+  <script type="text/javascript">
+    jQuery(function($) {
+      $("table.selectableRows").on("rowSelected.selectableRows", function(event, rows) {
+        logEvent(event, rows);
+        $("#selectedSet").text("Selected product Ids: " + JSON.stringify(getSelectedProductIds()));
+      });
+
+      function getSelectedProductIds() {
+        var result = [];
+        $("table.selectableRows").find(">tbody > tr.selected").each(function() {
+          result.push($(this).children("td:eq(0)").text());          
+        });
+        return result;
+      };
+      
+      function logEvent(event, rows) {
+        rows.each(function() {        
+          $(document.createElement("span"))
+            .append(event.type + " id: " + $($(this).find("td").get(0)).text() + "<br>")
+            .appendTo("#log").get(0).scrollIntoView(false);
+        });
+      };
+      
+      $("#chkMultiSelect").on("change", function(event) {
+        $("table.selectableRows").toggleClass("multiselect", $(this).is(":checked"));
+      });
+      $("#chkMultiSelect").trigger("change");
+      
+      $("#btnClearLog").on("click", function() {
+        $("#log").empty();
+      });
+    });
+  </script>
+</html>
