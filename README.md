@@ -4,7 +4,7 @@
 
 "selectableRows" is a javascript behavior (and, optionally, CSS) that can be attached to any table element.
 
-See [online example here](http://akhikhl.blogspot.de/2013/05/test-selectablerows-script.html)
+See [online example here](https://dl.dropboxusercontent.com/u/15089387/js/selectableRows/example_selectableRows.htm)
 
 ##API
 
@@ -73,6 +73,8 @@ $("#exampleTable").on("rowSelectionChanged.selectableRows", function(event, newS
   console.log(event.type, newSelection, oldSelection);
 });
 ```
+
+### Stylesheets
 
 The page may optionally use CSS file:
 ```html
